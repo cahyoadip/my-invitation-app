@@ -1,4 +1,4 @@
-document.getElementById('exportButton').addEventListener('click', function() {
+document.getElementById('copyButton').addEventListener('click', function() {
     const recipient = document.getElementById('recipientInput').value;
     const formattedRecipient = recipient.replace(/ /g, '+');
     const templateText = `Salam sejatera bagi kita semua…
@@ -19,11 +19,16 @@ Clara & Cahyo`;
 
     document.getElementById('outputText').value = templateText;
 
-    const blob = new Blob([templateText], { type: 'text/plain' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'invitation.txt';
-    a.click();
-    URL.revokeObjectURL(url);
+    // Copy the generated text to clipboard
+    const outputText = document.getElementById('outputText');
+    outputText.select();
+    outputText.setSelectionRange(0, 99999); // For mobile devices
+
+    try {
+        const successful = document.execCommand('copy');
+        const msg = successful ? 'successful' : 'unsuccessful';
+        console.log('Copying text command was ' + msg);
+    } catch (err) {
+        console.log('Oops, unable to copy');
+    }
 });
